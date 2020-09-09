@@ -19,3 +19,5 @@ Route::post('mail/send', 'MailController@send')->name('mail.send');
 
 Route::get('mail/{id}/show', 'MailController@show')->name('mail.show');
 
+Route::get('mails/export/{type}', 'MailController@export')->name('mail.export');
+

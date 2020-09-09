@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Mail;
 use Hashids\Hashids;
 use App\MailSubject;
+use App\AnalyzeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Http\Resources\MailResource;
+use App\Exports\MailsExport;
+use Maatwebsite\Excel\Excel;
 
 class MailController extends Controller
 {
@@ -24,7 +27,9 @@ class MailController extends Controller
             return MailResource::collection(Mail::all());
         
         return view('welcome') ->with([
-            'subjects' => MailSubject::all()
+            'subjects' => MailSubject::all(),
+            'analyzes' => AnalyzeMail::all(),
+            'mails' => Mail::all()
         ]);
     }
 
@@ -94,5 +99,13 @@ class MailController extends Controller
             );
 
         return new MailResource($model);
+    }
+
+    public function export($type)
+    {
+        if ($type == "excel")
+            return (new MailsExport)->download('mails.xlsx', Excel::XLSX);
+        elseif ($type == "pdf")
+            return (new MailsExport)->download('mails.pdf', Excel::DOMPDF);
     }
 }

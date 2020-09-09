@@ -44,7 +44,9 @@ class AnalyzeMail implements ShouldQueue
         }
         
         return [
-            'pts' => $pts,
+            'pts' => $num_spam_words > 0 
+                ? number_format($pts / $num_spam_words, 2)
+                : 0,
             'format_body' => $this->getFormatBody($body),
             'num_words' => $num_words,
             'num_spam_words' => $num_spam_words
