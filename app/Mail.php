@@ -70,4 +70,17 @@ class Mail extends Model
         'created' => MailCreated::class,
     ];
     
+
+    public function subject()
+    {
+        return $this->belongsTo('App\MailSubject');
+    }
+
+    public function getPorSpamAttribute()
+    {
+        if ($this->num_words == 0)
+            return 0;
+
+        return number_format((($this->num_spam_words / $this->num_words) * 100), 2);
+    }
 }

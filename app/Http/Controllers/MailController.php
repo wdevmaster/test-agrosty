@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Mail;
+use Hashids\Hashids;
+use App\MailSubject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use App\Http\Resources\MailResource;
 
 class MailController extends Controller
 {
@@ -16,41 +21,11 @@ class MailController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax())
-            return response()->json(['data' => [
-                [
-                    'id' => 1,
-                    'hid' => '1akjsdhkjs',
-                    'to' => 'email@email',
-                    'subject' => 'subject',
-                    'por_spam' => 50,
-                ],
-                [
-                    'id' => 2,
-                    'hid' => '2akjsdhkjs',
-                    'to' => 'email@email',
-                    'subject' => 'subject',
-                    'por_spam' => 50,
-                ],
-                [
-                    'id' => 3,
-                    'hid' => '3akjsdhkjs',
-                    'to' => 'email@email',
-                    'subject' => 'subject',
-                    'por_spam' => 50,
-                ]
-            ]]);
-
-        return view('mail.index');
-    }
-
-    /**
-     * Show the form for creating a new mail data.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function form()
-    {
-        return view('mail.form');
+            return MailResource::collection(Mail::all());
+        
+        return view('welcome') ->with([
+            'subjects' => MailSubject::all()
+        ]);
     }
 
     /**
@@ -64,10 +39,13 @@ class MailController extends Controller
         try {
             DB::beginTransaction();
 
-            Mail::create($request->all());
+            $data = [];
+            foreach ($request->all() as $row) 
+                $data[$row['name']] = $row['value']; 
+
+            Mail::create($data);
 
             DB::commit();
-
             return response()->json([
                 'success' => true,
                 'message' => __('mail has been send'),
@@ -93,17 +71,6 @@ class MailController extends Controller
      */
     public function show($id)
     {
-        sleep(1);
-        return response()->json([
-            'to' => 'email@email',
-            'subject' => 'subject',
-            'format_body' => 'Hola <i class="text-muted">mundo A</i>',
-            'por_spam' => 50,
-            'num_words' => 2,
-            'num_spam_words' => 1
-        ]);
-
-        /*
         try {
             return response()->json($this->findModel($id));
         } catch (\Exception $e) {
@@ -115,7 +82,6 @@ class MailController extends Controller
                 ]],
             ], 500);
         }
-        */
     }
 
     public function findModel($code)
@@ -127,6 +93,6 @@ class MailController extends Controller
                 __('The mail was not found')
             );
 
-        return $model;
+        return new MailResource($model);
     }
 }

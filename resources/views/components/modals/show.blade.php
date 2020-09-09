@@ -52,8 +52,8 @@
                 $('span#to').text(data.to)
                 $('span#subject').text(data.subject)
 
-                $('#body').children().remove();
-                $('#body').append(`<div>${data.format_body}</div>`)
+                $('#body div').remove();
+                $('#body.modal-body').append(`<div>${data.format_body}</div>`)
 
                 $('#por_spam').text(`${data.por_spam}%`)
                 $('#num_work small').text(`/ ${data.num_words}`)

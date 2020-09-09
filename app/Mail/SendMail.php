@@ -32,6 +32,7 @@ class SendMail extends Mailable
     {
         return $this
                 ->markdown('mails.send')
-                ->subject(env('APP_NAME').' - '.$this->mail->subject);
+                ->from($this->mail->from_email, $this->mail->from_name)
+                ->subject(env('APP_NAME').' - '.$this->mail->subject->name);
     }
 }

@@ -15,6 +15,7 @@
                 <th scope="col">To</th>
                 <th scope="col">Subject</th>
                 <th scope="col">% Spam</th>
+                <th scope="col">Sent in</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -30,6 +31,7 @@
 
 @section('scripts')
 <script src="//cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 <script>
     const http = axios.create({
         baseURL: "{{ url('/') }}",
@@ -48,10 +50,16 @@
                 { data: "to" },
                 { data: "subject" },
                 { data: "por_spam" },
+                { 
+                    data: "created_at",
+                    render: ( data, type, row, meta ) => {
+                        return moment(data).toNow(true);
+                    }
+                },
             ],
             columnDefs: [
                 {
-                    targets: 4,
+                    targets: 5,
                     data: null,
                     orderable: false,
                     render: ( data, type, row ) => {

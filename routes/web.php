@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'MailController@index');
-
-Route::get('mail', 'MailController@index')->name('mail.index');
-
-Route::get('mail/form', 'MailController@form')->name('mail.form');
+Route::get('/', 'MailController@index')->name('mail.index');
 
 Route::post('mail/send', 'MailController@send')->name('mail.send');
 

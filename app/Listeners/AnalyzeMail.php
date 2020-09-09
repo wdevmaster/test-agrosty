@@ -9,6 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class AnalyzeMail implements ShouldQueue
 {
+
+    private $rex = '<i class="text-muted">%w%</i>';
     /**
      * Create the event listener.
      *
@@ -27,6 +29,16 @@ class AnalyzeMail implements ShouldQueue
      */
     public function handle(MailCreated $event)
     {
-        \Log::debug('Listeners.AnalyzeMail');
+        Analyze::create([
+            'mail_id' => $event->mail->id,
+            'format_body' => $this->formatBody($event->mail->body)
+        ]);
+    }
+
+    
+    public function formatBody($body)
+    {
+        \Log::debug($body);
+        return $body;
     }
 }
