@@ -81,6 +81,6 @@ class Mail extends Model
         if ($this->num_words == 0)
             return 0;
 
-        return number_format((($this->num_spam_words / $this->num_words) * 100), 2);
+        return number_format((($this->num_spam_words / $this->num_words) * 100), 0);
     }
 }

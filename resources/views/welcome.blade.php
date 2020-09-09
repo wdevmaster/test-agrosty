@@ -49,7 +49,12 @@
                 { data: "id" },
                 { data: "to" },
                 { data: "subject" },
-                { data: "por_spam" },
+                { 
+                    data: "por_spam",
+                    render: ( data, type, row, meta ) => {
+                        return `${data}%`;
+                    }
+                },
                 { 
                     data: "created_at",
                     render: ( data, type, row, meta ) => {

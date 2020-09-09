@@ -66,13 +66,10 @@
             .then((data) => {
                 $('form').trigger("reset")
 
-                alert(data.message);
-
                 $(this).removeClass('disabled')
-                $('#createMail').modal('hide')
+                $('#createMail').modal('hide')  
 
-                $('.table').DataTable().fnDestroy()
-                $('.table').dataTable()
+                if(!alert(data.message)){window.location.reload()}
             })
         })
     });

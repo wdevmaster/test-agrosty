@@ -16,6 +16,7 @@ class CreateAnalyzeMailsTable extends Migration
         Schema::create('analyze_mails', function (Blueprint $table) {
             $table->foreignId('mail_id')->unique()->constrained('mails')->onDelete('cascade');
             $table->longText('format_body')->nullable();
+            $table->integer('pts')->default(0);
             $table->integer('num_words')->default(0);
             $table->integer('num_spam_words')->default(0);
         });
